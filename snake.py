@@ -2,7 +2,6 @@ import pygame, sys
 from pygame.locals import *
 import food
 from Queue import *
-import main
 
 #colors
 WHITE = (255,255,255) #snake and food 
@@ -11,18 +10,21 @@ RED = (255,0,0) #head
 
 class Snake:
     def __init__(self, xcoord, ycoord, width):
-        self.x = (xcoord - self.width)/2
-        self.y = (ycoord + self.width)/2 #these two are useless...atm.
+        self.XLEN = xcoord
+        self.YLEN = ycoord
+        self.x = (xcoord - width)/2
+        self.y = (ycoord + width)/2 #these two are useless...atm.
         self.width = width
         # makes a square in the center of the screen
         self.head = pygame.Rect(self.x, self.y, self.width, self.width)
-        self.tail = []
+        self.tail = {}
         self.velocity = (0, 0)
         self.pos = (self.x, self.y)
+        self.counter = 0
 
-    #returns position of head of snake
+    #returns position of head of snake. Top left of rectangle.
     def get_pos(self):
-        return self.head.center
+        return self.head.topleft
 
     #returns velocity
     def get_velocity(self):
@@ -48,18 +50,23 @@ class Snake:
         elif action == pygame.K_DOWN  and self.velocity != (0, -self.width):
             self.velocity = (0, self.width)
 
-    #updates the snake's positions. Returns -1 if the snake dies. Otherwise returns True if the snake ate the food.
-    def update(self, food):
+    #updates snake's positions. Returns -1 if the snake dies. Otherwise returns True if snake ate food false otherwise.
+    def update(self, food_pellet):
+        #moving the snake. Head first then tail.
         self.head.move(self.velocity)
         #self.head.move(self.velocity[0], self.velocity[1])
-        for segment in self.tail:
-            segment.move(self.velocity)
-            #segment.move(self.velocity[0], self.velocity[1])
-        if self.head.collidelist(self.tail) or self.x >= main.XLEN :
+        #check for death by wall or hitting the tail.
+        if (self.head.collidedict(self.tail) or self.head.right > self.XLEN or
+                self.head.left < 0 or self.head.bottom > self.YLEN or self.head.top < 0):
             return -1
-        ate_food = self.head.collidepoint(food.get_pos())
+        ate_food = self.head.collidepoint(food_pellet.get_pos())
         new_tail_rect = pygame.Rect(self.get_pos(), (self.width, self.width))
-        self.tail.append(new_tail_rect)
-        if not ate_food:
-            self.tail.get()
+        if ate_food:
+            self.counter += 1
+            self.tail[self.counter] = new_tail_rect
+        else:
+            for segment in self.tail:
+                self.tail[segment].move(self.velocity)
+                # segment.move(self.velocity)
+                # segment.move(self.velocity[0], self.velocity[1])
         return ate_food
