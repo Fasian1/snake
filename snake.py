@@ -41,24 +41,29 @@ class Snake:
         #   self.head.move((0,-self.velocity))
         # elif action == pygame.K_DOWN:
         #   self.head.move((0,self.velocity))
-        if action == pygame.K_LEFT and self.velocity != (self.width, 0):
+        if action.key == pygame.K_LEFT and self.velocity != (self.width, 0):
             self.velocity = (-self.width, 0)
-        elif action == pygame.K_RIGHT and self.velocity != (-self.width, 0):
+        elif action.key == pygame.K_RIGHT and self.velocity != (-self.width, 0):
             self.velocity = (self.width, 0)
-        elif action == pygame.K_UP and self.velocity != (0, self.width):
+        elif action.key == pygame.K_UP and self.velocity != (0, self.width):
             self.velocity = (0, -self.width)
-        elif action == pygame.K_DOWN  and self.velocity != (0, -self.width):
+        elif action.key == pygame.K_DOWN  and self.velocity != (0, -self.width):
             self.velocity = (0, self.width)
 
     #updates snake's positions. Returns -1 if the snake dies. Otherwise returns True if snake ate food false otherwise.
     def update(self, food_pellet):
         #moving the snake. Head first then tail.
-        self.head.move(self.velocity)
-        #self.head.move(self.velocity[0], self.velocity[1])
+        self.head = self.head.move(self.velocity)
         #check for death by wall or hitting the tail.
-        if (self.head.collidedict(self.tail) or self.head.right > self.XLEN or
+        if (self.head.right > self.XLEN or
                 self.head.left < 0 or self.head.bottom > self.YLEN or self.head.top < 0):
             return -1
+        collide = False
+        # for segment in self.tail:
+        #     if self.head.colliderect(self.tail[segment]):
+        #         collide = True
+        # if collide:
+        #     return -1
         ate_food = self.head.collidepoint(food_pellet.get_pos())
         new_tail_rect = pygame.Rect(self.get_pos(), (self.width, self.width))
         if ate_food:
@@ -66,7 +71,7 @@ class Snake:
             self.tail[self.counter] = new_tail_rect
         else:
             for segment in self.tail:
-                self.tail[segment].move(self.velocity)
+                self.tail[segment] = self.tail[segment].move(self.velocity)
                 # segment.move(self.velocity)
                 # segment.move(self.velocity[0], self.velocity[1])
         return ate_food

@@ -4,7 +4,7 @@ import snake
 import food
 
 pygame.init()
-FPS = 15
+FPS = 10
 FPSCLOCK = pygame.time.Clock()
 
 #setting up the window
@@ -33,11 +33,11 @@ def main():
                 snake_obj.move(event)
             # if event.key == K_ESCAPE:
             #     terminate()
-            game_state = snake_obj.update(food_obj)
-            if game_state == -1:
-                return #Game Over!
-            elif game_state:
-                food_obj = food.Food(XLEN, YLEN)
+        game_state = snake_obj.update(food_obj)
+        if game_state == -1:
+            return #Game Over!
+        elif game_state:
+            food_obj = food.Food(XLEN, YLEN, WIDTH, snake_obj)
         draw()
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -49,9 +49,10 @@ def terminate():
 
 
 def draw():
+    DISPLAYSURF.fill(BLACK)
     pygame.draw.rect(DISPLAYSURF, RED, snake_obj.head)
     for segment in snake_obj.tail:
-        pygame.draw.rect(DISPLAYSURF, WHITE, segment)
+        pygame.draw.rect(DISPLAYSURF, WHITE, snake_obj.tail[segment])
     pygame.draw.rect(DISPLAYSURF, WHITE, food_obj.get_rect())
 
 if __name__ == '__main__':
