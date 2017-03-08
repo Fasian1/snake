@@ -1,0 +1,51 @@
+pygame.init() - always need this line. Initializes everything.
+DISPLAYSURF = pygame.display.set_mode((400,300)) #sets width and heigh of window to 400,300 respectively 
+set_mode has two additional arguments, flags and depth. the depth is for how many bits to use for color but it will usually automatically set it to the best one so don't touch it unless you have to.
+
+pygame.display.set_caption() sets the caption for the window. 
+
+pixel grid has origin (0,0) at top left. 
+
+Colors can be a pygame.colors object or a 4 item tuple. 
+for colors, 4th number in tuple is alpha value is ia a measure of opacity. setting this number to 255 is the same as not having it at all. 
+Useful colors:
+Black(  0,   0,   0)
+White(255, 255, 255)
+Blue(  0,  0, 255)
+Red(255,   0,   0)
+Yellow(255, 255,   0)
+Green(  0, 128,   0)
+Aqua(  0, 255, 255)
+Fuchsia(255,   0, 255)
+Gray(128, 128, 128)
+Lime(  0, 255,   0)
+Maroon(128,  0,   0)
+Navy Blue(  0,  0, 128)
+Olive(128, 128,   0)
+Purple(128,  0, 128)
+Silver(192, 192, 192)
+Teal(  0, 128, 128)
+
+pygame rectangle can also be a pygame.Rect object or 4 item tuple.
+(top left x, top left y, width, height) 
+Use the object. if you change parts, it'll automatically update the rest of the object. USE THE OBJECTS. 
+
+pygame.draw to draw. 
+ex.:
+pygame.draw.polygon(surface, color, pointlist, width) width is how thick the polygon should be. 0/blank is filled.  
+
+fill(color) – The fill() method is not a function but a method of pygame.Surface objects. It will completely fill in the entire Surface object with whatever color value you pass as for the color parameter.
+·         pygame.draw.polygon(surface, color, pointlist, width) – A polygon is shape made up of only flat sides. The surface and color parameters tell the function on what surface to draw the polygon, and what color to make it.
+The pointlist parameter is a tuple or list of points (that is, tuple or list of two-integer tuples for XY coordinates). The polygon is drawn by drawing lines between each point and the point that comes after it in the tuple. Then a line is drawn from the last point to the first point. You can also pass a list of points instead of a tuple of points.
+The width parameter is optional. If you leave it out, the polygon that is drawn will be filled in, just like our green polygon on the screen is filled in with color. If you do pass an integer value for the width parameter, only the outline of the polygon will be drawn. The integer represents how many pixels width the polygon’s outline will be. Passing 1 for the width parameter will make a skinny polygon, while passing 4 or 10 or 20 will make thicker polygons. If you pass the integer 0 for the width parameter, the polygon will be filled in (just like if you left the width parameter out entirely).
+All of the pygame.draw drawing functions have optional width parameters at the end, and they work the same way as pygame.draw.polygon()’s width parameter. Probably a better name for the width parameter would have been thickness, since that parameter controls how thick the lines you draw are.
+·         pygame.draw.line(surface, color, start_point, end_point, width) – This function draws a line between the start_point and end_point parameters.
+·         pygame.draw.lines(surface, color, closed, pointlist, width) – This function draws a series of lines from one point to the next, much like pygame.draw.polygon(). The only difference is that if you pass False for the closed parameter, there will not be a line from the last point in the pointlist parameter to the first point. If you pass True, then it will draw a line from the last point to the first.
+·         pygame.draw.circle(surface, color, center_point, radius, width) – This function draws a circle. The center of the circle is at the center_point parameter. The integer passed for the radius parameter sets the size of the circle.
+The radius of a circle is the distance from the center to the edge. (The radius of a circle is always half of the diameter.) Passing 20 for the radius parameter will draw a circle that has a radius of 20 pixels.
+·         pygame.draw.ellipse(surface, color, bounding_rectangle, width) – This function draws an ellipse (which is like a squashed or stretched circle). This function has all the usual parameters, but in order to tell the function how large and where to draw the ellipse, you must specify the bounding rectangle of the ellipse. A bounding rectangle is the smallest rectangle that can be drawn around a shape. Here’s an example of an ellipse and its bounding rectangle:
+
+The bounding_rectangle parameter can be a pygame.Rect object or a tuple of four integers. Note that you do not specify the center point for the ellipse like you do for the pygame.draw.circle() function.
+·         pygame.draw.rect(surface, color, rectangle_tuple, width) – This function draws a rectangle. The rectangle_tuple is either a tuple of four integers (for the XY coordinates of the top left corner, and the width and height) or a pygame.Rect object can be passed instead. If the rectangle_tuple has the same size for the width and height, a square will be drawn.
+
+Use pygame.display.update() to update screen after finish drawing. 
