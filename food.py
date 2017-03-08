@@ -8,17 +8,18 @@ class Food:
         self.xcoord = xcoord
         self.ycoord = ycoord
         self.width = width
-        self.pos = [random.random()*xcoord/width, random.random()*ycoord/width]
-        self.pos = [self.pos[0]*width, self.pos[1]*width]
-        self.rectangle = pygame.Rect(self.pos, (width, width))
-        while self.rectangle in snake_obj.tail.itervalues() or self.rectangle == snake_obj.head:
+        self.pos = [int(random.random() * self.xcoord) / self.width, int(random.random() * self.ycoord) / self.width]
+        self.pos = [self.pos[0] * self.width - self.width/2, self.pos[1] * self.width + self.width/2]
+        self.rectangle = pygame.Rect(self.pos, (self.width, self.width))
+        while(self.rectangle in snake_obj.tail.itervalues() or self.rectangle == snake_obj.head or
+            self.pos[0] > xcoord-width or self.pos[0] < width or self.pos[1] > ycoord-width or self.pos[1] < width):
             self.random_food()
 
 
     def random_food(self):
-        self.pos = [random.random() * self.xcoord / self.width, random.random() * self.ycoord / self.width]
-        self.pos = [self.pos[0] * self.width, self.pos[1] * self.width]
-        self.rectangle = pygame.Rect(self.pos, self.width, self.width)
+        self.pos = [int(random.random() * self.xcoord) / self.width, int(random.random() * self.ycoord) / self.width]
+        self.pos = [self.pos[0] * self.width - self.width/2, self.pos[1] * self.width + self.width/2]
+        self.rectangle = pygame.Rect(self.pos, (self.width, self.width))
 
     #returns position of food
     def get_pos(self):
